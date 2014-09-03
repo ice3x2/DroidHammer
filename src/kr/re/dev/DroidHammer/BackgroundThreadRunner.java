@@ -16,8 +16,8 @@ public class BackgroundThreadRunner {
 	private FieldFinder mFinder;
 	
 	
-	protected void putRunnerMethod(Method method, int callDelayed) {
-		mListMethodHolderIndex.add(new MethodHolder(method, callDelayed));
+	protected void putRunnerMethod(Method method) {
+		mListMethodHolderIndex.add(new MethodHolder(method));
 	}
 	
 	public BackgroundThreadRunner(FieldFinder finder) {		

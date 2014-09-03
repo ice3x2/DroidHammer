@@ -73,7 +73,7 @@ public class ListenerMapper {
 	
 	
 	private void setTouchListenerForMapping(final Method method,final View view) {
-		final MethodHolder methodHolder = new MethodHolder(method, 0);
+		final MethodHolder methodHolder = new MethodHolder(method);
 		view.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			@SuppressLint("ClickableViewAccessibility")
@@ -98,7 +98,7 @@ public class ListenerMapper {
 	
 	
 	private void setClickListenerForMapping(final Method method,final View view) {
-		final MethodHolder methodHolder = new MethodHolder(method, 0);
+		final MethodHolder methodHolder = new MethodHolder(method);
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -119,7 +119,7 @@ public class ListenerMapper {
 	private void setItemClickListenerForMapping(final Method method,final View view) {
 		if(!(view instanceof ListView)) return;
 		ListView listView = (ListView)view;
-		final MethodHolder methodHolder = new MethodHolder(method, 0);
+		final MethodHolder methodHolder = new MethodHolder(method);
 		listView.setOnItemClickListener(new ListView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -141,7 +141,7 @@ public class ListenerMapper {
 	private void setSeekbarTouchStartForMapping(final Method method, final View view) {
 		if(!(view instanceof SeekBar)) return;
 		SeekBar seekBar = (SeekBar) view;
-		final MethodHolder methodHolder = new MethodHolder(method, 0);
+		final MethodHolder methodHolder = new MethodHolder(method);
 		SeekBarChangeListener seekBarListener =  SeekBarChangeListener.obtain(mFinder.getTarget(), seekBar);
 		seekBarListener.setStartTouchMethodHolder(methodHolder);
 	}
@@ -149,7 +149,7 @@ public class ListenerMapper {
 	private void setSeekbarTouchStopForMapping(final Method method, final View view) {
 		if(!(view instanceof SeekBar)) return;
 		SeekBar seekBar = (SeekBar) view;
-		final MethodHolder methodHolder = new MethodHolder(method, 0);
+		final MethodHolder methodHolder = new MethodHolder(method);
 		SeekBarChangeListener seekBarListener =  SeekBarChangeListener.obtain(mFinder.getTarget(), seekBar);
 		seekBarListener.setStopTouchMethodHolder(methodHolder);
 	}
@@ -157,7 +157,7 @@ public class ListenerMapper {
 	private void setSeekbarProgressChangedForMapping(final Method method, final View view) {
 		if(!(view instanceof SeekBar)) return;
 		SeekBar seekBar = (SeekBar) view;
-		final MethodHolder methodHolder = new MethodHolder(method, 0);
+		final MethodHolder methodHolder = new MethodHolder(method);
 		SeekBarChangeListener seekBarListener =  SeekBarChangeListener.obtain(mFinder.getTarget(), seekBar);
 		seekBarListener.setProgressChangedMethodHolder(methodHolder);
 	}

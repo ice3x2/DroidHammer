@@ -8,28 +8,35 @@ import java.lang.reflect.Method;
 public class MethodHolder {
 	    protected  Method mMethod;
 		protected String name = "";
-		
+		protected Class<?> mDeclaringClassType = Object.class;
 		protected Class<?>[] mListParamType = new Class[0];
 		protected Object[] mArgs;
 		
-		protected  MethodHolder(Method method) {
+
+		public  MethodHolder(Class<?> declaringType, String name,  Class<?>[] paramsType) {
+			this(name, paramsType);
+			mDeclaringClassType = declaringType;
+		}
+		
+		public  MethodHolder(Method method) {
 			this.mMethod = method;
 			this.name = method.getName();
 			this.mListParamType = method.getParameterTypes();
 			if(mListParamType == null) mListParamType = new Class[0];
 			this.mArgs = new Object[mListParamType.length];
+			this.mDeclaringClassType = method.getDeclaringClass();
 			defaultParamsToObjectType(mListParamType);
 			createEmptyArgs(mArgs,mListParamType);
 		}
 		
-		protected  MethodHolder(String name,  Class<?>[] paramsType) {
+		public  MethodHolder(String name,  Class<?>[] paramsType) {
 			this.name = name;
 			this.mListParamType = paramsType;
 			if(mListParamType == null) mListParamType = new Class[0];
 			defaultParamsToObjectType(mListParamType);
 		}
 		
-		protected Method getMethod() {
+		public Method getMethod() {
 			return mMethod;
 		}
 		

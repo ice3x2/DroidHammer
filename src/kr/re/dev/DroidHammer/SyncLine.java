@@ -3,6 +3,7 @@ package kr.re.dev.DroidHammer;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 
 import android.graphics.Path.Op;
 import android.test.mock.MockApplication;
@@ -13,6 +14,9 @@ import kr.re.dev.DroidHammer.Annotations.UiThread;
 
 public class SyncLine {
 	
+	public static final String DEFAULT_THREAD_NAME = "2014_SYNCLINE";
+
+	private static WorkerConveyer mWorkerConveyer;
 	private WeakReference<Object> mWeakRefTarget;
 	private BackgroundThreadRunner mBackgroundRunner;
 	private UiThreadRunner mUiThreadRunner;
@@ -24,7 +28,7 @@ public class SyncLine {
 	
 	private SyncLine(Object target) {
 		mWeakRefTarget = new WeakReference<Object>(target);
-		mappingMethodByAnnotation();
+		mappingMethodByAnnotation();		
 	}
 	
 	private void mappingMethodByAnnotation() {
@@ -48,54 +52,4 @@ public class SyncLine {
 		}
 	}
 	
-	public static class Option {
-		private int mID = -1;
-		private boolean mSync = true;
-		private boolean mAllwaysAddLast = false;
-		private boolean mDemone = false;
-		private Object mResultObject;
-		
-		protected Option setID(int id) {
-			mID = id;
-			return this;
-		}
-		protected Option setAllwaysAddLast(boolean use) {
-			mAllwaysAddLast = use;
-			return this;
-		}
-		protected Option enableSync(boolean sync) {
-			mSync = sync;
-			return this;
-		}
-		protected Option enableDemon(boolean demone) {
-			mDemone = demone;
-			return this;
-		}
-		protected Option putResult(Object returnValue) {
-			mResultObject = returnValue;
-			return this;
-		}
-		
-		public int getID() {
-			return mID;
-		}
-		public boolean isSync() {
-			return mSync;
-		}
-		public boolean isOnDemone() {
-			return mDemone;
-		}
-		public Object getResultValue() {
-			return mResultObject;
-		}
-	}
-	
-	/*public boolean runBackground(Object...args) {
-		 return mBackgroundRunner.runBackground(args);
-	}
-	
-	public boolean runUiThread(Object...args) {
-		 return mUiThreadRunner.runUiThread(args);
-	}*/
-
 }

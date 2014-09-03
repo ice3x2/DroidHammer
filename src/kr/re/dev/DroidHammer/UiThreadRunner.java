@@ -21,7 +21,7 @@ public class UiThreadRunner {
 	}
 	
 	protected void putRunnerMethod(Method method, int callDelayed) {
-		mListMethodHolderIndex.add(new MethodHolder(method, callDelayed));
+		mListMethodHolderIndex.add(new MethodHolder(method));
 	}
 	
 	protected boolean runUiThread(final Object...args) {
@@ -70,7 +70,6 @@ public class UiThreadRunner {
 		 listParams.toArray(paramArray);
 		 final MethodHolder realMethodHolder = findMethodHolder(target, methodName, paramArray);
 		 if(realMethodHolder == null) return true;
-		 int delayed = realMethodHolder.getDelayed();
 		 
 		 
 		 Runnable runnable = new Runnable() {
@@ -79,9 +78,6 @@ public class UiThreadRunner {
 				 invoke(target, realMethodHolder,args);				
 			}
 		 };	
-		 if(delayed == 0) mHandler.post(runnable);
-		 else if(delayed < 0) mHandler.postAtFrontOfQueue(runnable);
-		 else mHandler.postDelayed(runnable, delayed);
 		 return true;
 	}
 	
@@ -120,7 +116,7 @@ public class UiThreadRunner {
 		if(findIndex < 0) {
 			Method[] methods =  target.getClass().getDeclaredMethods();
 			for(Method method : methods) {
-				MethodHolder targetMethodHolder = new MethodHolder(method, 0);
+				MethodHolder targetMethodHolder = new MethodHolder(method);
 				if(targetMethodHolder.equalsIncludExcludesParams(methodHolder)) {
 					mListMethodHolderIndex.add(targetMethodHolder);
 					return targetMethodHolder;
