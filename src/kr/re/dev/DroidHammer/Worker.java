@@ -1,6 +1,5 @@
 package kr.re.dev.DroidHammer;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 import kr.re.dev.DroidHammer.Annotations.Background;
@@ -38,12 +37,7 @@ public class Worker {
 				 worker.setSync(backgroundThread.sync()).setDelay(backgroundThread.delay()).setID(backgroundThread.id())
 				 .setAddMode(backgroundThread.addMode()).setUiThread(false);
 			 }
-			 
-			 
-			 
-			 
-			 
-			
+			 return worker;
 		}
 		
 		protected static Worker obtain(MethodHolder methodHolder, String[] threadNames) {
