@@ -7,9 +7,9 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import kr.re.dev.DroidHammer.LikeAA;
 import kr.re.dev.DroidHammer.Annotations.AfterViews;
 import kr.re.dev.DroidHammer.Annotations.ViewById;
-import kr.re.dev.DroidHammer.LikeAA;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
@@ -86,6 +86,9 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 		mActivity = getActivity();
 		mInstrumentation = getInstrumentation();
 	}
+	public void testA() {
+		assertEquals(1, 1);
+	}
 	
 	
 	@SuppressLint("NewApi")
@@ -116,7 +119,7 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 		
 		assertEquals(mActivity.mSystemServiceActivityManager.getClass(), ActivityManager.class );
 		assertEquals(mActivity.mSystemServiceAlarmManager.getClass(), AlarmManager.class);
-		assertEquals(mActivity.mSystemServiceConnectivityManager.getClass(), ConnectivityManager.class);
+		assertTrue(ConnectivityManager.class.isAssignableFrom(mActivity.mSystemServiceConnectivityManager.getClass()));
 		assertEquals(mActivity.mSystemServiceDownloadManager.getClass(), DownloadManager.class);
 		assertEquals(mActivity.mSystemServiceInputMethodManager.getClass(), InputMethodManager.class);
 		assertEquals(mActivity.mSystemServiceKeyguardManager.getClass(), KeyguardManager.class);
@@ -128,14 +131,12 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 		assertEquals(mActivity.mSystemServiceUiModeManager.getClass(),UiModeManager.class );
 		assertNotNull(mActivity.mSystemServiceVibrator.getClass().isAssignableFrom(Vibrator.class));
 		assertEquals(mActivity.mSystemServiceWifiManager.getClass(), WifiManager.class);
-		assertEquals(mActivity.mSystemServiceTelephonyManager.getClass(), TelephonyManager.class);
+		assertTrue(TelephonyManager.class.isAssignableFrom(mActivity.mSystemServiceTelephonyManager.getClass()));
 		assertNotNull(mActivity.mSystemServiceWindowManager.getClass().isAssignableFrom(WindowManager.class));
 		
 		System.out.println(A.B.C.class.getDeclaredMethods()[0].toString());
 		A a = new A();
 		a.b.c.run();
-		
-		
 	}
 	
 	public static class A {
@@ -168,14 +169,14 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 	
 	@SmallTest
 	public void testMapping() {
-		gLikeAA = LikeAA.inject(mActivity.getWindow().getDecorView(), this);
+		gLikeAA = LikeAA.injectObject(mActivity.getWindow().getDecorView(), this);
 		assertNotNull(gLikeAA);
 		mTestLooper.loop();
 	}
 	
-	/**
-	** @ViewById 가 잘 동작하는지 테스트 한다. 
-	*/
+	/***
+	/** @ViewById 가 잘 동작하는지 테스트 한다. 
+	**/
 	@AfterViews 
 	public void afterViews(Object obj, int g) {
 		mTestLooper.pushTest(new Runnable() {
@@ -201,6 +202,7 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 	
 	@SmallTest
 	public void testInjectViewOnFragment() {
+		//LikeAA.injectObject(mFragment);
 		mActivity.getSupportFragmentManager().beginTransaction().add(R.id.content, mFragment, "TestFragment").commitAllowingStateLoss();
 		mActivity.getWindow().getDecorView().postDelayed(new Runnable() {
 			public void run() {
@@ -260,8 +262,8 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 	
 
 	 /**(non-Javadoc)
-	 * @see junit.framework.TestCase#tearDown()
-	 **/
+	  @see junit.framework.TestCase#tearDown()
+	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
@@ -296,6 +298,5 @@ public class LikeAATest extends ActivityInstrumentationTestCase2<TestActivity> {
 		}
 	}
 
-	
 
 }

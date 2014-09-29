@@ -84,7 +84,6 @@ public class ClassType {
 		// 프래그 먼트를 지원하는 Level11 이상 (허니콤) 에서는 바로 검사.
 		if(android.os.Build.VERSION.SDK_INT >= 11) {
 			if(obj instanceof Fragment) return true;
-			else return false;
 		}
 		Class<?> type = obj.getClass();
 		int matchCount = 0;

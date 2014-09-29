@@ -138,12 +138,12 @@ public class TestFragment extends Fragment{
 		endTime = System.nanoTime();
 		System.out.println("Use findViewById Method : " + ((endTime - startTime) / 1000.0f / 1000.0f) + "ms");
 		startTime = System.nanoTime();
-		mMapper = LikeAA.inject(this);
+		mMapper = LikeAA.injectObject(this);
 		endTime = System.nanoTime();
 		System.out.println("Use LikeAA : " + ((endTime - startTime) / 1000.0f / 1000.0f) + "ms");
 		
 		startTime = System.nanoTime();
-		mMapper = LikeAA.inject(this);
+		mMapper = LikeAA.injectObject(this);
 		endTime = System.nanoTime();
 		System.out.println("use2 LikeAA : " + ((endTime - startTime) / 1000.0f / 1000.0f) + "ms");
 		

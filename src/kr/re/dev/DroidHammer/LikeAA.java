@@ -11,10 +11,17 @@ import java.util.concurrent.Executors;
 
 import kr.re.dev.DroidHammer.Annotations.AfterViews;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.Dialog;
+import android.app.Fragment;
+import android.app.Service;
 import android.content.Context;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.view.View;
 
 /**
  * salmonPie <br/>
@@ -61,24 +68,55 @@ public class LikeAA {
 
 	private LikeAA() {}
 
+	public static LikeAA inject(Activity activtiy) {
+		LikeAA salmonPie = LikeAA.injectObject(activtiy);
+		return salmonPie;
+	}
+	public static LikeAA inject(View view) {
+		LikeAA salmonPie = LikeAA.injectObject(view);
+		return salmonPie;
+	}
+	public static LikeAA inject(Dialog dialog) {
+		LikeAA salmonPie = LikeAA.injectObject(dialog);
+		return salmonPie;
+	}
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
+	public static LikeAA inject(Fragment fragment) {
+		LikeAA salmonPie = LikeAA.injectObject(fragment);
+		return salmonPie;
+	}
+	
+	public static LikeAA inject(Service service) {
+		LikeAA salmonPie = LikeAA.inject(service.getApplicationContext(), service);
+		return salmonPie;
+	}
+	
 	public static LikeAA inject(Context context, Object target) {
 		LikeAA salmonPie = new LikeAA();
 		salmonPie.inject(salmonPie.createFieldFinder(context, target, ClassType.TYPE_CONTEXT), target);
 		return salmonPie;
 	}
-
-	public static LikeAA inject(Object androidObject, Object target) {
-		LikeAA salmonPie = new LikeAA();
-		int classType = ClassType.searchClassType(androidObject);
-		salmonPie.inject(salmonPie.createFieldFinder(androidObject,target, classType), target);
-		return salmonPie;
-	}
-	public static LikeAA inject(Object androidObject) {
+	
+	public static LikeAA injectObject(Object androidObject) {
 		LikeAA salmonPie = new LikeAA();
 		int classType = ClassType.searchClassType(androidObject);
 		salmonPie.inject(salmonPie.createFieldFinder(androidObject, androidObject, classType), androidObject);
 		return salmonPie;
 	}
+	
+	/**
+	 * 
+	 * @param androidObject Andoird 의 Object. {@link Activity} {@link View},{@link Fragment},{@link Context},{@link Dialog} 등을 입력할 수 있다.
+	 * @param target 대상 객체. 
+	 * @return
+	 */
+	public static LikeAA injectObject(Object androidObject, Object target) {
+		LikeAA salmonPie = new LikeAA();
+		int classType = ClassType.searchClassType(androidObject);
+		salmonPie.inject(salmonPie.createFieldFinder(androidObject,target, classType), target);
+		return salmonPie;
+	}
+	
 
 	public static void run(Object...args) {
 	}

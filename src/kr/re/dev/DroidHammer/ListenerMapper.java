@@ -84,6 +84,7 @@ public class ListenerMapper {
 						Object[] args = new Object[]{v, event};
 						methodHolder.adaptArguments(args);
 						Object obj = methodHolder.invokeGetObject(target);
+						methodHolder.clearArgs();
 						if(obj instanceof Boolean ) {
 							return (Boolean)obj;
 						}
@@ -129,6 +130,7 @@ public class ListenerMapper {
 						Object[] args = new Object[]{adapter, view, position, id, adapter.getItemAtPosition(position)};
 						methodHolder.adaptArguments(args);
 						methodHolder.invoke(target);
+						methodHolder.clearArgs();
 					}
 				} catch (Exception e) {
 					uncaughtException(e);
@@ -223,6 +225,7 @@ public class ListenerMapper {
 				} catch(Exception e) {
 					Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Looper.getMainLooper().getThread(), e);
 				}
+				mProgressChangedMethod.clearArgs();
 			}
 		}
 
@@ -237,6 +240,7 @@ public class ListenerMapper {
 				} catch(Exception e) {
 					Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Looper.getMainLooper().getThread(), e);
 				}
+				mStartTouchMethod.clearArgs();
 			}
 		}
 
@@ -251,6 +255,7 @@ public class ListenerMapper {
 				} catch(Exception e) {
 					Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Looper.getMainLooper().getThread(), e);
 				}
+				mStopTouchMethod.clearArgs();
 			}
 		}
 	}

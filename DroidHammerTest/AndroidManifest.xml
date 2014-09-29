@@ -9,7 +9,7 @@
         android:targetSdkVersion="17" />
     
     <instrumentation android:name="android.test.InstrumentationTestRunner"
-    android:targetPackage="kr.re.dev.SalmonePie.Test"
+    android:targetPackage="kr.re.dev.DroidHammerTest"
     android:label="Test" />    
     
     
@@ -22,6 +22,10 @@
     	     
         	
         <activity android:name="TestActivity"
+            android:label="@string/app_name">
+        </activity>
+        
+        <activity android:name="TestSyncLineActivity"
             android:label="@string/app_name">
         </activity>
         

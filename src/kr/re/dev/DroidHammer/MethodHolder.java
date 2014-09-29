@@ -36,6 +36,10 @@ public class MethodHolder {
 			defaultParamsToObjectType(mListParamType);
 		}
 		
+		public Class<?> getDeclaringClassType() {
+			return mDeclaringClassType;
+		}
+		
 		public Method getMethod() {
 			return mMethod;
 		}
@@ -66,13 +70,18 @@ public class MethodHolder {
 				}
 			}
 		}
-		
-		
+		public void clearArgs() {
+			mArgs = null;
+		}
 		
 		private void createEmptyArgs(Object[] args, Class<?>[] types) {
 			for(int i = 0, n = args.length; i < n; ++i) {
 				args[i] = createEmptyObject(types[i]); 
 			}
+		}
+
+		public int getParamCount() {
+			return mListParamType.length;
 		}
 		
 		private Object createEmptyObject( Class<?> type) {
@@ -105,20 +114,24 @@ public class MethodHolder {
 			return classType;
 		}
 		
+		
 		/**
-		 * 파라미터 타입까지 비교하여 같은 MethodHolder 인지 확인한다.
+		 * 상속받거나 
 		 * @param o
 		 * @return
 		 */
-		public boolean equalsIncludExcludesParams(Object o) {
+		public boolean equalsAssignableParams(Object o) {
 			if(super.equals(o)) return true;
 			if(o instanceof MethodHolder) {
 				MethodHolder compareObj = (MethodHolder)o;
 				if(!compareObj.name.equals(this.name)) return false;
 				if(mListParamType.length != compareObj.mListParamType.length) return false;
-				for(int i = 0, n = mListParamType.length; i <  n; ++i)  
-					if(!mListParamType[i].equals(compareObj.mListParamType[i]) && 
-							!mListParamType[i].isAssignableFrom(compareObj.mListParamType[i])) return false;
+				for(int i = 0, n = mListParamType.length; i <  n; ++i) {  
+					boolean assign =  mListParamType[i].equals(compareObj.mListParamType[i]);					
+					if(assign) continue;
+					assign = mListParamType[i].isAssignableFrom(compareObj.mListParamType[i]);
+					if(!assign) return false;
+				}
 			}
 			return true;
 		}
