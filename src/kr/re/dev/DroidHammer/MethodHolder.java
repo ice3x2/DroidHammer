@@ -36,6 +36,11 @@ public class MethodHolder {
 			defaultParamsToObjectType(mListParamType);
 		}
 		
+		public Class<?>[] getParamsTypes() {
+			return mListParamType;
+		}
+		
+		
 		public Class<?> getDeclaringClassType() {
 			return mDeclaringClassType;
 		}
@@ -136,6 +141,18 @@ public class MethodHolder {
 			return true;
 		}
 		
+
+		public boolean equalsStaticParams(Object o) {
+			if(super.equals(o)) return true;
+			if(o instanceof MethodHolder) {
+				MethodHolder compareObj = (MethodHolder)o;
+				if(!compareObj.name.equals(this.name)) return false;
+				if(mListParamType.length != compareObj.mListParamType.length) return false;
+				for(int i = 0, n = mListParamType.length; i <  n; ++i)  
+					if(!mListParamType[i].getName().equals(compareObj.mListParamType[i].getName())) return false;
+			}
+			return true;
+		}
 		
 		@Override
 		public boolean equals(Object o) {
