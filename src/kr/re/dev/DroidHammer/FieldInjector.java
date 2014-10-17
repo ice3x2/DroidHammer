@@ -7,6 +7,7 @@ import kr.re.dev.DroidHammer.Annotations.Inject;
 import kr.re.dev.DroidHammer.Annotations.Resource;
 import kr.re.dev.DroidHammer.Annotations.ViewById;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.DownloadManager;
@@ -42,11 +43,12 @@ public class FieldInjector {
 		mFinder = finder;
 	}
 	
-	
 	public void callInjectionField() {
 		Object target = mFinder.getTarget();
+		Class<?> type =  target.getClass();
+		injectContentView(target, type);
 		if(target == null) return;
-		Field[] fields = target.getClass().getDeclaredFields();
+		Field[] fields = type.getDeclaredFields();
 		Annotation[] annotations = null;
 		for(Field field :fields) {
 			 annotations =  field.getAnnotations();
@@ -59,7 +61,31 @@ public class FieldInjector {
 		}	
 	}
 	
-	/**
+	private void injectContentView(Object target, Class<?> type) {
+		Annotation[] annotations =  type.getDeclaredAnnotations();
+		for(Annotation annotation : annotations) {
+			if(annotation instanceof kr.re.dev.DroidHammer.Annotations.Actvity && target instanceof Activity) {
+				 int layout =  ((kr.re.dev.DroidHammer.Annotations.Actvity) annotation).value();
+				 ((Activity)target).setContentView(layout);
+			} else if(annotation instanceof kr.re.dev.DroidHammer.Annotations.Fragment && ClassType.isFragmentType(target)){
+				int layout =  ((kr.re.dev.DroidHammer.Annotations.Fragment)annotation).value();
+				LayoutInflater inflater = mFinder.getLayoutInflater();
+				View view = inflater.inflate(layout, null);
+				
+				Field field;
+				try {
+					field = type.getDeclaredField("mView");
+					field.setAccessible(true);
+					injectField(target, view,field);
+				} catch (NoSuchFieldException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
+	}
+
+	
+ 	/**
 	 * InjectRes 어노테이션이 붙은 필드에 리소스 인스턴스를 찾아서 주입한다.
 	 * @param target
 	 * @param field

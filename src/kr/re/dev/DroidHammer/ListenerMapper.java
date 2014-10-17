@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import kr.re.dev.DroidHammer.Annotations.Click;
 import kr.re.dev.DroidHammer.Annotations.ItemClick;
+import kr.re.dev.DroidHammer.Annotations.LongClick;
 import kr.re.dev.DroidHammer.Annotations.SeekBarProgressChange;
 import kr.re.dev.DroidHammer.Annotations.SeekBarTouchStart;
 import kr.re.dev.DroidHammer.Annotations.SeekBarTouchStop;
@@ -39,6 +40,7 @@ public class ListenerMapper {
 				View targetView =  mFinder.findViewById(id);
 				if(targetView != null) {
 					if(annotation instanceof Click) setClickListenerForMapping(method, targetView);
+					if(annotation instanceof LongClick) setLongClickListenerForMapping(method, targetView);
 					else if(annotation instanceof Touch) setTouchListenerForMapping(method, targetView);
 					else if(annotation instanceof ItemClick) setItemClickListenerForMapping(method, targetView);
 					else if(annotation instanceof SeekBarTouchStart) setSeekbarTouchStartForMapping(method, targetView);
@@ -62,7 +64,8 @@ public class ListenerMapper {
 	
 	private int[] getViewIDByAnnotation(Annotation annotation) {
 		int[] viewIDs = null;
-		if(annotation instanceof Click) viewIDs = ((Click)annotation).value();  
+		if(annotation instanceof Click) viewIDs = ((Click)annotation).value();
+		if(annotation instanceof LongClick) viewIDs = ((LongClick)annotation).value();  
 		else if(annotation instanceof Touch) viewIDs = ((Touch)annotation).value();
 		else if(annotation instanceof ItemClick) viewIDs = ((ItemClick)annotation).value();
 		else if(annotation instanceof SeekBarTouchStart) viewIDs = ((SeekBarTouchStart)annotation).value();
@@ -109,11 +112,37 @@ public class ListenerMapper {
 						Object[] args = new Object[]{v};
 						methodHolder.adaptArguments(args);
 						methodHolder.invoke(target);
+						methodHolder.clearArgs();
 					}
 				} catch (Exception e) {
 					uncaughtException(e);
 				}
 			}
+		});
+	}
+	
+	private void setLongClickListenerForMapping(final Method method,final View view) {
+		final MethodHolder methodHolder = new MethodHolder(method);
+		view.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				try {
+					Object target = mFinder.getTarget();
+					if(target != null) {
+						Object[] args = new Object[]{v};
+						methodHolder.adaptArguments(args);
+						Object object = methodHolder.invokeGetObject(target);
+						methodHolder.clearArgs();
+						if(object != null && object instanceof Boolean) {
+							return(boolean) object;
+						}						
+					}
+				} catch (Exception e) {
+					uncaughtException(e);
+				}
+				return false; 
+			}
+
 		});
 	}
 	

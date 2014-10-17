@@ -76,7 +76,9 @@ public class MethodHolder {
 			}
 		}
 		public void clearArgs() {
-			mArgs = null;
+			for(int i = 0, n = mArgs.length; i < n; ++i) {
+				mArgs[i] = null; 
+			}
 		}
 		
 		private void createEmptyArgs(Object[] args, Class<?>[] types) {

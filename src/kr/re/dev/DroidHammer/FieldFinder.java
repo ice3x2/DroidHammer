@@ -83,7 +83,7 @@ public class FieldFinder {
 	}
 
 	
-	private Context getContext(Object parent, int classType) {
+	public Context getContext(Object parent, int classType) {
 		if(parent == null) return null;
 		if(mClassType == ClassType.TYPE_FRAGMENT)		return ((View)parent).getContext();
 		else if(mClassType == ClassType.TYPE_ACTIVTY)	return ((Activity)parent); 
