@@ -2,7 +2,7 @@ package kr.re.dev.DroidHammerTest;
 
 import kr.re.dev.DroidHammer.Annotations.Click;
 import kr.re.dev.DroidHammer.Annotations.ViewById;
-import kr.re.dev.DroidHammer.LikeAA;
+import kr.re.dev.DroidHammer.LikeAA.LikeAA;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

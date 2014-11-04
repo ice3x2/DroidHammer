@@ -18,10 +18,15 @@ public class SyncLine {
 	private final static Object sSyncMonitor = new Object();
 
 
-	private SyncLine(Object target) {
-
-	}
-
+	private SyncLine(Object target) {}
+	
+	/**
+	 * 메소드 호출을 각각의 어노테이션이 붙은 쓰레드로 보낸다.
+	 * 
+	 * @param target
+	 * @param arguments
+	 * @return
+	 */
 	public static boolean run(Object target, Object... arguments) {
 		Thread currentThread =  Thread.currentThread();
 		StackTraceElement[] stackTraceElements = currentThread.getStackTrace();

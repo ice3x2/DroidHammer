@@ -1,8 +1,9 @@
-package kr.re.dev.DroidHammer;
+package kr.re.dev.DroidHammer.LikeAA;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
+import kr.re.dev.DroidHammer.ClassType;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
@@ -46,7 +47,8 @@ public class FieldFinder {
 		mWeakRefParent = parent;
 		mWeakRefTarget = target;
 		if(targetType == ClassType.TYPE_FRAGMENT) {
-			 mWeakRefParent = new WeakReference<Object>(extractViewIfFragment(parent));
+			 Object fragmentView = extractViewIfFragment(parent.get());
+			 mWeakRefParent = new WeakReference<Object>(fragmentView);
 		}
 		mClassType = targetType;
 	}
@@ -55,11 +57,16 @@ public class FieldFinder {
 		mWeakRefTarget = parent;
 		mWeakRefParent = mWeakRefTarget; 
 		if(targetType == ClassType.TYPE_FRAGMENT) {
-			 Object fragment = extractViewIfFragment(parent.get()); 
-			 mWeakRefParent = new WeakReference<Object>(fragment);
+			 Object fragmentView = extractViewIfFragment(parent.get());
+			 mWeakRefParent = new WeakReference<Object>(fragmentView);
 		}
 		mClassType = targetType;
 	}
+	
+	protected void setParentObject(Object obj) {
+		mWeakRefParent = new WeakReference<Object>(obj);
+	}
+	
 	
 	private View extractViewIfFragment(Object object) {
 		 try {

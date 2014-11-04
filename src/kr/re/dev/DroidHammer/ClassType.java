@@ -68,7 +68,7 @@ public class ClassType {
 			return TYPE_APPLICATION;
 		}  else if(object instanceof Context) {
 			return TYPE_CONTEXT;
-		} else if(isFragmentType(object)) {
+		} else if(isFragmentObj(object)) {
 			return TYPE_FRAGMENT;
 		} else {
 			return TYPE_OBJECT;
@@ -77,15 +77,19 @@ public class ClassType {
 	
 	/**
 	 * Fragment type 이라면 true 를 반환하고 그렇지 않으면  false 를 반환. 
-	 * @param Fragment 의심 클래스 타입.
+	 * @param FragmentLayout 의심 클래스 타입.
 	 * @return 만약 true 라면 프래그먼트. 
 	 */
-	protected static boolean isFragmentType(Object obj) {
+	protected static boolean isFragmentObj(Object obj) {
 		// 프래그 먼트를 지원하는 Level11 이상 (허니콤) 에서는 바로 검사.
 		if(android.os.Build.VERSION.SDK_INT >= 11) {
 			if(obj instanceof Fragment) return true;
 		}
 		Class<?> type = obj.getClass();
+		return isFragmentType(type);
+	}
+	
+	protected static boolean isFragmentType(Class<?> type) {
 		int matchCount = 0;
 		Method[] methods = type.getMethods();
 		for(Method method : methods) {

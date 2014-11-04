@@ -1,5 +1,5 @@
 
-package kr.re.dev.DroidHammer;
+package kr.re.dev.DroidHammer.LikeAA;
 
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import kr.re.dev.DroidHammer.ClassType;
 import kr.re.dev.DroidHammer.Annotations.AfterViews;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -95,6 +96,9 @@ public class LikeAA {
 		LikeAA salmonPie = new LikeAA();
 		salmonPie.inject(salmonPie.createFieldFinder(context, target, ClassType.TYPE_CONTEXT), target);
 		return salmonPie;
+	}
+	public static LikeAA injectFragment(Object fragment) {
+		return injectObject(fragment);
 	}
 	
 	public static LikeAA injectObject(Object androidObject) {

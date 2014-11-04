@@ -1,17 +1,13 @@
 package kr.re.dev.DroidHammerTest;
 
-import java.lang.ref.WeakReference;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
-import kr.re.dev.DroidHammer.LikeAA;
 import kr.re.dev.DroidHammer.Annotations.Background;
 import kr.re.dev.DroidHammer.Annotations.UiThread;
 import kr.re.dev.DroidHammer.Sync.SyncLine;
 
 import org.junit.Before;
-import org.junit.Test;
 
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -100,7 +96,11 @@ public class SyncLineTest extends ActivityInstrumentationTestCase2<TestSyncLineA
 		}
 		@Background(sync = true)
 		public void exe(Number value) {
+			
 			if(SyncLine.run(this,value)) return;
+			
+			
+			
 			((AtomicInteger)value).set(7000);
 		}
 		

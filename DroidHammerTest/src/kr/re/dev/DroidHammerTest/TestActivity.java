@@ -4,7 +4,7 @@ package kr.re.dev.DroidHammerTest;
 import kr.re.dev.DroidHammer.Annotations.Inject;
 import kr.re.dev.DroidHammer.Annotations.Resource;
 import kr.re.dev.DroidHammer.Annotations.ViewById;
-import kr.re.dev.DroidHammer.LikeAA;
+import kr.re.dev.DroidHammer.LikeAA.LikeAA;
 import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.DownloadManager;

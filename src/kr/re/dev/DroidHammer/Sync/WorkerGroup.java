@@ -4,9 +4,8 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import android.util.Log;
-
 import kr.re.dev.DroidHammer.MethodHolder;
+import android.util.Log;
 
 
 public class WorkerGroup  {

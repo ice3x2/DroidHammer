@@ -1,4 +1,4 @@
-package kr.re.dev.DroidHammer;
+package kr.re.dev.DroidHammer.LikeAA;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -35,6 +35,8 @@ import android.view.inputmethod.InputMethodManager;
  * 필드의 인스턴스를 대상 오브젝트에 주입하는 클래스.
  * @author ice3x2
  */
+
+
 public class FieldInjector {
 	
 	private FieldFinder mFinder;
@@ -64,23 +66,79 @@ public class FieldInjector {
 	private void injectContentView(Object target, Class<?> type) {
 		Annotation[] annotations =  type.getDeclaredAnnotations();
 		for(Annotation annotation : annotations) {
-			if(annotation instanceof kr.re.dev.DroidHammer.Annotations.Actvity && target instanceof Activity) {
-				 int layout =  ((kr.re.dev.DroidHammer.Annotations.Actvity) annotation).value();
+			if(annotation instanceof kr.re.dev.DroidHammer.Annotations.Actvity_ && target instanceof Activity) {
+				 int layout =  ((kr.re.dev.DroidHammer.Annotations.Actvity_) annotation).value();
 				 ((Activity)target).setContentView(layout);
-			} else if(annotation instanceof kr.re.dev.DroidHammer.Annotations.Fragment && ClassType.isFragmentType(target)){
-				int layout =  ((kr.re.dev.DroidHammer.Annotations.Fragment)annotation).value();
-				LayoutInflater inflater = mFinder.getLayoutInflater();
-				View view = inflater.inflate(layout, null);
+			} /*else if(annotation instanceof Fragment_ && ClassType.isFragmentObj(target)){
+				int layout =  ((Fragment_)annotation).value();
 				
-				Field field;
 				try {
-					field = type.getDeclaredField("mView");
+					View view = (View)type.getMethod("getView").invoke(target);
+					if(view != null) {
+						return;
+					}
+					LayoutInflater inflater = mFinder.getLayoutInflater();
+					if(inflater == null) {
+						Activity activity = (Activity)type.getMethod("getActivity").invoke(target);
+						inflater = activity.getLayoutInflater();
+					}
+					view = inflater.inflate(layout, null);
+					Field field = null;
+					Class<?> typeForSuchField = type;
+					*//**
+					 * View 필드를 찾는다.
+					 *//*
+					while(!type.equals(Object.class)) {
+						try {
+							field = typeForSuchField.getDeclaredField("mView");
+							if(type == typeForSuchField) {
+								typeForSuchField = typeForSuchField.getSuperclass();
+								continue;
+							}
+						} catch(NoSuchFieldException e) {
+							Field[] fiels =  type.getDeclaredFields();
+							for(Field inField : fiels) 
+								if(inField.getType().equals(View.class)) {
+									field = inField;
+									break;
+								}
+						}
+						if(field != null) break;
+						typeForSuchField = typeForSuchField.getSuperclass();
+					}
 					field.setAccessible(true);
 					injectField(target, view,field);
-				} catch (NoSuchFieldException e) {
+					mFinder.setParentObject(view);
+					
+					// 프래그먼트를 갱신해준다.
+					Object fragmentManagerObj =  type.getMethod("getFragmentManager").invoke(target);
+					Class<?> fragmentManagerType =  fragmentManagerObj.getClass();
+					Object transactionObj = fragmentManagerType.getMethod("beginTransaction").invoke(fragmentManagerObj);
+					Method[] methods = transactionObj.getClass().getDeclaredMethods();
+					for(Method m : methods) {
+						Class<?>[] paramsType =  m.getParameterTypes();
+						String name =  m.getName();
+						if(name.equals("detach") && paramsType != null && paramsType.length == 1 && ClassType.isFragmentType(paramsType[0])) {
+							m.setAccessible(true);
+							m.invoke(transactionObj, target);
+							break;
+						}
+					}
+					for(Method m : methods) {
+						Class<?>[] paramsType =  m.getParameterTypes();
+						String name =  m.getName();
+						if(name.equals("attach") && paramsType != null && paramsType.length == 1 && ClassType.isFragmentType(paramsType[0])) {
+							m.setAccessible(true);
+							m.invoke(transactionObj, target);
+							break;
+						}
+					}
+					transactionObj.getClass().getMethod("commit").invoke(transactionObj);
+					
+				} catch (Exception e) {
 					throw new RuntimeException(e);
 				}
-			}
+			}*/
 		}
 	}
 

@@ -7,9 +7,9 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import kr.re.dev.DroidHammer.LikeAA;
 import kr.re.dev.DroidHammer.Annotations.AfterViews;
 import kr.re.dev.DroidHammer.Annotations.ViewById;
+import kr.re.dev.DroidHammer.LikeAA.LikeAA;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.AlarmManager;

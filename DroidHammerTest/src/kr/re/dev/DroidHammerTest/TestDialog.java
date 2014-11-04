@@ -1,8 +1,8 @@
 package kr.re.dev.DroidHammerTest;
 
 
-import kr.re.dev.DroidHammer.LikeAA;
 import kr.re.dev.DroidHammer.Annotations.ViewById;
+import kr.re.dev.DroidHammer.LikeAA.LikeAA;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
